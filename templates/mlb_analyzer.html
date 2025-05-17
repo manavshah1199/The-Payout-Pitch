@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLB Player Betting Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+        form {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        input[type="text"] {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            width: 250px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 16px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .betting-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .betting-section input {
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+        .betting-section button {
+            background-color: #007bff;
+            color: white;
+            margin-left: 10px;
+        }
+        #earning-result {
+            margin-top: 10px;
+            color: white;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>💰 MLB Player Betting Analyzer 💸</h1>
+    <form method="POST">
+        <input type="text" name="player" placeholder="Enter Player Name">
+        <button type="submit">Analyze</button>
+    </form>
+
+    {% if players %}
+    <table>
+        <tr>
+            <th>Player</th>
+            <th>Team</th>
+            <th>AVG</th>
+            <th>HR</th>
+            <th>RBI</th>
+        </tr>
+        {% for p in players %}
+        <tr>
+            <td>{{ p['name'] }}</td>
+            <td>{{ p['team'] }}</td>
+            <td>{{ '%.3f'|format(p['avg']) }}</td>
+            <td>{{ p['hr'] }}</td>
+            <td>{{ p['rbi'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="betting-section">
+        <h2 style="color: white;">Simulate Your Bet</h2>
+        <input type="number" id="betAmount" placeholder="Enter bet amount ($)">
+        <button onclick="calculateEarnings()">Calculate Potential Earnings</button>
+        <div id="earning-result"></div>
+    </div>
+    {% endif %}
+
+    <script>
+        function calculateEarnings() {
+            const bet = document.getElementById('betAmount').value;
+            if (!bet || bet <= 0) {
+                document.getElementById('earning-result').innerText = "Please enter a valid bet amount.";
+                return;
+            }
+            const multiplier = 2.5 + Math.random(); // Simulated odds
+            const potential = (bet * multiplier).toFixed(2);
+            document.getElementById('earning-result').innerText = `💸 Potential Earnings: $${potential}`;
+        }
+    </script>
+</body>
+</html>
