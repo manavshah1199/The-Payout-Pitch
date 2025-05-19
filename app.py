@@ -1,7 +1,9 @@
-
 from flask import Flask, render_template, request
+import os
 
-app = Flask(__name__)
+# Tell Flask to use the current directory for templates
+current_dir = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, template_folder=current_dir)
 
 MOCK_PLAYERS = [
     {'name': 'Aaron Judge', 'team': 'NYY', 'avg': .402, 'hr': 15, 'rbi': 41},
@@ -24,20 +26,19 @@ MOCK_PLAYERS = [
     {'name': 'Josh Naylor', 'team': 'ARI', 'avg': .304, 'hr': 5, 'rbi': 27},
     {'name': 'Trea Turner', 'team': 'PHI', 'avg': .302, 'hr': 2, 'rbi': 15},
     {'name': 'Maikel Garcia', 'team': 'KC', 'avg': .300, 'hr': 5, 'rbi': 19},
-    # Add more players as needed...
 ]
 
 def search_players(query):
     query = query.lower()
-    return [p for p in MOCK_PLAYERS if query in p['name'].lower()]
+    return [player for player in MOCK_PLAYERS if query in player['name'].lower()]
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     players = []
     if request.method == 'POST':
-        search_name = request.form.get('player', '')
-        if search_name:
-            players = search_players(search_name)
+        search_query = request.form.get('player', '')
+        if search_query:
+            players = search_players(search_query)
     return render_template('index.html', players=players)
 
 if __name__ == '__main__':
