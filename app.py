@@ -38,7 +38,7 @@ def index():
         search_name = request.form.get('player', '')
         if search_name:
             players = search_players(search_name)
-    return render_template('mlb_analyzer.html', players=players)
+    return render_template('index.html', players=players)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
